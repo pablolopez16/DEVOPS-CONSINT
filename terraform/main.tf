@@ -1,17 +1,17 @@
 #region S3
 
 resource "aws_s3_bucket" "amzn-s3-bucket" {
-    bucket = "amzn-s3-bucket"
-    tags = {
-      "Company" = "Constella Intelligence"
-    }
+  bucket = "amzn-s3-bucket"
+  tags = {
+    "Company" = "Constella Intelligence"
+  }
 }
 resource "aws_s3_bucket_notification" "amzn-s3-bucket-notification" {
   bucket = aws_s3_bucket.amzn-s3-bucket.id
 
   queue {
-    queue_arn     = aws_sqs_queue.amzn-sqs.arn
-    events        = ["s3:ObjectCreated:*"]
+    queue_arn = aws_sqs_queue.amzn-sqs.arn
+    events    = ["s3:ObjectCreated:*"]
   }
 }
 
@@ -34,7 +34,7 @@ data "aws_iam_policy_document" "amzn-policy-queue" {
     effect = "Allow"
 
     principals {
-      type        = "*" //aws, service,...
+      type        = "*"   //aws, service,...
       identifiers = ["*"] // who in the type we filter
     }
 
@@ -46,7 +46,7 @@ data "aws_iam_policy_document" "amzn-policy-queue" {
       variable = "aws:SourceArn"
       values   = [aws_s3_bucket.amzn-s3-bucket.arn]
     }
-    
+
   }
 }
 
