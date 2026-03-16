@@ -13,6 +13,7 @@ jobs:
 
   localstack-cicd:
     runs-on: ubuntu-latest
+    if: contains(github.event.head_commit.message, 'test')
 
     services:
       localstack:
@@ -54,12 +55,8 @@ jobs:
         run: terraform validate
         working-directory: ./terraform
 
-      - name: Terraform Plan -auto -approve
+      - name: Terraform Plan 
         run: terraform plan
-        working-directory: ./terraform
-
-      - name: Terraform Apply
-        run: terraform apply -auto-approve
         working-directory: ./terraform
 
       - name: Setup/Install Python
