@@ -10,7 +10,6 @@ LOCALSTACK_URL = os.getenv("LOCALSTACK_URL", "http://localhost:4566")
 BUCKET_NAME = os.getenv("BUCKET_NAME", "amzn-s3-bucket")
 SQS_URL = os.getenv("SQS_URL", "http://sqs.eu-south-2.localhost.localstack.cloud:4566/000000000000/s3-notification-queue")
 
-
 def get_s3_client():
     return boto3.client(
         "s3",
