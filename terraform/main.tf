@@ -46,7 +46,7 @@ data "aws_iam_policy_document" "amzn-policy-queue" {
       variable = "aws:SourceArn"
       values   = [aws_s3_bucket.amzn-s3-bucket.arn]
     }
-    
+
 
   }
 }
