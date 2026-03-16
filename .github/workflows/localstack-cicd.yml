@@ -54,12 +54,12 @@ jobs:
         run: terraform validate
         working-directory: ./terraform
 
-      - name: Terraform Plan
+      - name: Terraform Plan -auto -approve
         run: terraform plan
         working-directory: ./terraform
 
       - name: Terraform Apply
-        run: terraform apply
+        run: terraform apply -auto-approve
         working-directory: ./terraform
 
       - name: Setup/Install Python
