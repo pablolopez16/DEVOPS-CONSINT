@@ -1,0 +1,84 @@
+
+name: localstack-cicd
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+
+  localstack-cicd:
+    runs-on: ubuntu-latest
+
+    services:
+      localstack:
+        image: localstack/localstack:latest
+        ports:
+          - "4566:4566"
+        env:
+          SERVICES: s3,sqs
+        options: >-
+          --health-cmd "curl -f http://localhost:4566/_localstack/health || exit 1"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    
+    steps:
+
+      - name: Download GitHub code inside GitHub actions
+        uses: actions/checkout@v3
+
+      - name: Verify LocalStack is running
+        run: curl http://localhost:4566/_localstack/health
+
+      - name: Setup/Install Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform Init
+        run: terraform init
+        working-directory: ./terraform
+
+      - name: Terraform Format Check
+        run: terraform fmt -check
+        working-directory: ./terraform
+
+      - name: Terraform Validate
+        run: terraform validate
+        working-directory: ./terraform
+
+      - name: Terraform Plan
+        run: terraform plan
+        working-directory: ./terraform
+
+      - name: Setup/Install Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+        working-directory: ./application
+
+      - name: Run API
+        run: |
+          python app.py &
+          sleep 3
+        working-directory: ./application
+
+      - name: Validate GET endpoint
+        run: |
+          response=$(curl -s http://localhost:8000/terraform/s3/bucket/objects)
+          echo "Response: $response"
+          echo $response | grep -q "OK"
+
+      - name: Validate POST endpoint
+        run: |
+          response=$(curl -s -X POST http://localhost:8000/terraform/s3/bucket/objects \
+            -H "Content-Type: application/json" \
+            -d '{"filename": "test-file-localstack-cicd.json", "user": "pablo-github-actions"}')
+          echo "Response: $response"
+          echo $response | grep -q "successfully"

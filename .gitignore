@@ -1,0 +1,11 @@
+# Python API
+__pycache__/
+*.pyc
+.venv/
+.dist/
+
+# Terraform
+.terraform/
+terraform.tfstate
+*.tfstate.backup
+.terraform.lock.hcl

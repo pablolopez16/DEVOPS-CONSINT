@@ -1,0 +1,26 @@
+services:
+
+  localstack:
+    image: localstack/localstack:latest
+    container_name: localstack
+    ports:
+      - "4566:4566"
+    environment:
+      - SERVICES=s3,sqs
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4566/_localstack/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build: ./application
+    container_name: s3-app
+    ports:
+      - "8000:8000"
+    environment:
+      - LOCALSTACK_URL=http://localstack:4566
+      - BUCKET_NAME=amzn-s3-bucket
+    depends_on:
+      localstack:
+        condition: service_healthy
