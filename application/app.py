@@ -1,17 +1,17 @@
 from flask import Flask, jsonify, request
-import boto3
-import json
-import os
+from boto3 import client
+from json import dumps
+from os import getenv
 from datetime import datetime
 
 app = Flask(__name__)
 
-LOCALSTACK_URL = os.getenv("LOCALSTACK_URL", "http://localhost:4566")
-BUCKET_NAME = os.getenv("BUCKET_NAME", "amzn-s3-bucket")
-SQS_URL = os.getenv("SQS_URL", "http://sqs.eu-south-2.localhost.localstack.cloud:4566/000000000000/s3-notification-queue")
+LOCALSTACK_URL = getenv("LOCALSTACK_URL", "http://localhost:4566")
+BUCKET_NAME = getenv("BUCKET_NAME", "amzn-s3-bucket")
+SQS_URL = getenv("SQS_URL", "http://sqs.eu-south-2.localhost.localstack.cloud:4566/000000000000/s3-notification-queue")
 
 def get_s3_client():
-    return boto3.client(
+    return client(
         "s3",
         endpoint_url=LOCALSTACK_URL,
         region_name="eu-south-2"
@@ -60,7 +60,7 @@ def upload_object_to_terraform_s3_bucket():
         s3.put_object(
             Bucket=BUCKET_NAME,
             Key=filename,
-            Body=json.dumps(data),
+            Body=dumps(data),
             ContentType="application/json"
         )
 
