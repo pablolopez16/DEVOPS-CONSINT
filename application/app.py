@@ -24,6 +24,7 @@ def get_s3_client():
 
 @app.route("/terraform/s3/bucket/objects", methods=["GET"])
 def list_objects_terraform_bucket():
+    """List all objects inside the S3 bucket created by Terraform."""
     s3 = get_s3_client()
     try:
         response = s3.list_objects_v2(Bucket=BUCKET_NAME)
