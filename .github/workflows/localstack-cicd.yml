@@ -5,9 +5,6 @@ on:
   push:
     branches:
       - main
-  pull_request:
-    branches:
-      - main
 
 jobs:
   localstack-cicd:
@@ -35,9 +32,6 @@ jobs:
 
       - name: Download GitHub code inside GitHub actions
         uses: actions/checkout@v3
-
-      - name: Verify LocalStack is running
-        run: curl http://localhost:4566/_localstack/health
 
       - name: Setup/Install Terraform
         uses: hashicorp/setup-terraform@v3
@@ -96,5 +90,18 @@ jobs:
           response=$(curl -s http://localhost:8000/terraform/s3/bucket/objects)
           echo "Response: $response"
           echo $response | grep -q "OK"
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and push image to Docker Hub
+        uses: docker/build-push-action@v5
+        with:
+          context: ./application
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/s3-app:latest
       
       

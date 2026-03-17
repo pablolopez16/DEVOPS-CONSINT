@@ -13,8 +13,8 @@ services:
       timeout: 5s
       retries: 5
 
-  api:
-    build: ./application
+  api: 
+    image: pablolopez161616/s3-app:latest
     container_name: s3-app
     ports:
       - "8000:8000"
