@@ -59,9 +59,9 @@ jobs:
         run: terraform plan
         working-directory: ./terraform
 
-      #- name: Terraform apply 
-      #  run: terraform apply -auto-approve
-      #  working-directory: ./terraform
+      - name: Terraform apply 
+        run: terraform apply -auto-approve
+        working-directory: ./terraform
 
       - name: Setup/Install Python
         uses: actions/setup-python@v4
