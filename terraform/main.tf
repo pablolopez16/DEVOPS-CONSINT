@@ -5,8 +5,8 @@ data "aws_iam_policy_document" "amzn-policy-queue" {
     effect = "Allow"
 
     principals {
-      type        = "service"   //aws, service,...
-      identifiers = ["*"] // who in the type we filter
+      type        = "service" //aws, service,...
+      identifiers = ["*"]     // who in the type we filter
 
     }
 
