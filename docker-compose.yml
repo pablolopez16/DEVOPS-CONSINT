@@ -21,6 +21,9 @@ services:
     environment:
       - LOCALSTACK_URL=http://localstack:4566
       - BUCKET_NAME=amzn-s3-bucket
+      - AWS_ACCESS_KEY_ID=test        
+      - AWS_SECRET_ACCESS_KEY=test    
+      - AWS_DEFAULT_REGION=eu-south-2
     depends_on:
       localstack:
         condition: service_healthy
