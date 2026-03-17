@@ -52,9 +52,9 @@ jobs:
         run: terraform plan
         working-directory: ./terraform
 
-      #- name: Terraform apply 
-      # run: terraform apply -auto-approve
-      # working-directory: ./terraform
+      - name: Terraform apply 
+        run: terraform apply -auto-approve
+        working-directory: ./terraform
 
       - name: Setup/Install Python
         uses: actions/setup-python@v4
@@ -63,6 +63,12 @@ jobs:
 
       - name: Install dependencies
         run: pip install -r requirements.txt
+        working-directory: ./application
+
+      - name: Pylint
+        run: |
+          pip install pylint
+          pylint app.py --fail-under=7.0
         working-directory: ./application
 
       - name: Run API
