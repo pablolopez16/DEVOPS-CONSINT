@@ -6,7 +6,7 @@ data "aws_iam_policy_document" "amzn-policy-queue" {
 
     principals {
       type        = "service"
-      identifiers = ["s3.amazonaws.com"]  // who in the type we filter
+      identifiers = ["s3.amazonaws.com"] // who in the type we filter
 
     }
 
