@@ -50,7 +50,7 @@ def list_objects_terraform_bucket():
 
 @app.route("/terraform/s3/bucket/objects", methods=["POST"])
 def upload_object_to_terraform_s3_bucket():
-    """Upload a JSON object to the S3 bucket created by Terraform."""
+    """Upload a JSON object to the S3 bucket created by Terraform"""
     s3 = get_s3_client()
     try:
         data = request.get_json()
