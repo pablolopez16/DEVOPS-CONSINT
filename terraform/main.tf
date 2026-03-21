@@ -30,7 +30,7 @@ data "aws_iam_policy_document" "amzn-policy-queue" {
 resource "aws_s3_bucket" "amzn-s3-bucket" {
   bucket = "amzn-s3-bucket"
   tags = {
-    "Company" = "Constella Intelligence"
+    "Project" = "DevOps"
   }
 }
 resource "aws_s3_bucket_notification" "amzn-s3-bucket-notification" {
@@ -49,7 +49,7 @@ resource "aws_sqs_queue" "amzn-sqs" {
   name   = "s3-notification-queue"
   policy = data.aws_iam_policy_document.amzn-policy-queue.json
   tags = {
-    "Company" = "Constella Intelligence"
+    "Project" = "DevOps"
   }
 }
 #endregion
