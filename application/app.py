@@ -81,29 +81,29 @@ def upload_object_to_terraform_s3_bucket():
         return jsonify({"status": "error", "message": str(e)}), 500
     
 
-@app.route("/terraform/s3/bucket/objects/<string:filename>", methods=["DELETE"])
-def delete_object_from_terraform_s3_bucket(filename):
-    """Delete a specific object from the S3 bucket created by Terraform."""
-    s3 = get_s3_client()
-    try:
-        s3.head_object(Bucket=BUCKET_NAME, Key=filename)
-        s3.delete_object(Bucket=BUCKET_NAME, Key=filename)
+# @app.route("/terraform/s3/bucket/objects/<string:filename>", methods=["DELETE"])
+# def delete_object_from_terraform_s3_bucket(filename):
+#     """Delete a specific object from the S3 bucket created by Terraform."""
+#     s3 = get_s3_client()
+#     try:
+#         s3.head_object(Bucket=BUCKET_NAME, Key=filename)
+#         s3.delete_object(Bucket=BUCKET_NAME, Key=filename)
 
-        return jsonify({
-            "status": "OK",
-            "message": f"The file {filename} has been successfully deleted from the bucket."
-        }), 200
+#         return jsonify({
+#             "status": "OK",
+#             "message": f"The file {filename} has been successfully deleted from the bucket."
+#         }), 200
 
-    except s3.exceptions.ClientError as e:
-        if e.response["Error"]["Code"] == "404":
-            return jsonify({
-                "status": "error",
-                "message": f"The file {filename} does not exist in the bucket."
-            }), 404
-        return jsonify({"status": "error", "message": str(e)}), 500
+#     except s3.exceptions.ClientError as e:
+#         if e.response["Error"]["Code"] == "404":
+#             return jsonify({
+#                 "status": "error",
+#                 "message": f"The file {filename} does not exist in the bucket."
+#             }), 404
+#         return jsonify({"status": "error", "message": str(e)}), 500
 
-    except Exception as e:
-        return jsonify({"status": "error", "message": str(e)}), 500
+#     except Exception as e:
+#         return jsonify({"status": "error", "message": str(e)}), 500
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8000, debug=True) 

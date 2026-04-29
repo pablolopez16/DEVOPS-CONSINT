@@ -97,17 +97,17 @@ jobs:
           echo "Response: $response"
           echo $response | grep -q "OK"
 
-      - name: Delete Object from S3 Bucket
-        run: |
-          response=$(curl -s -X DELETE http://localhost:8000/terraform/s3/bucket/objects/test-file-localstack-cicd.json)
-          echo "Response: $response"
-          echo $response | grep -q "successfully deleted"
+      # - name: Delete Object from S3 Bucket
+      #   run: |
+      #     response=$(curl -s -X DELETE http://localhost:8000/terraform/s3/bucket/objects/test-file-localstack-cicd.json)
+      #     echo "Response: $response"
+      #     echo $response | grep -q "successfully deleted"
 
-      - name: List Objects S3 Bucket after deletion (verify empty)
-        run: |
-          response=$(curl -s http://localhost:8000/terraform/s3/bucket/objects)
-          echo "Response: $response"
-          echo $response | grep -q "empty"
+      # - name: List Objects S3 Bucket after deletion (verify empty)
+      #   run: |
+      #     response=$(curl -s http://localhost:8000/terraform/s3/bucket/objects)
+      #     echo "Response: $response"
+      #     echo $response | grep -q "empty"
 
       - name: Login to Docker Hub
         uses: docker/login-action@v3
